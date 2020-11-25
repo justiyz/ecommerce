@@ -1,7 +1,7 @@
-drop user if exists 'iclass'@'localhost';
+drop user if exists 'ern'@'localhost';
 
-create user 'iclass'@'localhost' identified by 'iclass123';
-grant all privileges on ecommercedb.* to 'iclass'@'localhost';
+create user 'ern'@'localhost' identified by 'ern123';
+grant all privileges on ecommercedb.* to 'ern'@'localhost';
 flush privileges;
 
 drop database if exists ecommercedb;

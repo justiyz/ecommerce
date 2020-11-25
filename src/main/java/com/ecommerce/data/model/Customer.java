@@ -1,6 +1,7 @@
 package com.ecommerce.data.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,7 +23,15 @@ public class Customer {
     private String contact;
     private String password;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "customer")
+    @ToString.Exclude
+    private Set<Card> cards;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<Order> orders;
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ToString.Exclude
     private Set<Address> addresses;
 
     public void setAddresses (Address address) {
@@ -31,4 +40,12 @@ public class Customer {
         }
         addresses.add(address);
     }
+
+    public void setCards(Card card){
+        if (cards == null){
+            cards = new HashSet<>();
+        }
+        cards.add(card);
+    }
+
 }

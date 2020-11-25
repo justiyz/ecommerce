@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 
 import javax.persistence.Access;
 import javax.security.auth.login.AccountException;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
+@Sql(scripts = {"classpath:db/insert.sql"})
 class CustomerRepositoryTest {
 
     @Autowired
@@ -62,13 +64,9 @@ class CustomerRepositoryTest {
 
     @Test
     void testThatTwoCustomersCanShareOneAddress () {
-        customer.setPassword("iclass123");
-        customer.setLastName("Tobi");
-        customer.setFirstName("Femi");
-        customer.setEmail("tobifemi@gmail.com");
-        customer.setContact("09023237811");
+        customer = customerRepository.findById(1).orElse(null);
 
-        Address address = addressRepository.findById(4).orElse(null);
+        Address address = addressRepository.findById(1).orElse(null);
 
         customer.setAddresses(address);
 
@@ -108,7 +106,7 @@ class CustomerRepositoryTest {
            log.info("address -> {}", address.getStreet());
        }
 
-       assertThat(customer.getAddresses().size()).isEqualTo(2);
+       assertThat(customer.getAddresses().size()).isEqualTo(1);
     }
 
     @Test
@@ -119,14 +117,24 @@ class CustomerRepositoryTest {
 
         assert customer != null;
 
-        Address address = addressRepository.findById(3).orElse(null);
+        Address address = addressRepository.findById(2).orElse(null);
 
         if (customer.getAddresses().contains(address)) {
             customer.getAddresses().remove(address);
         }
 
-        assertThat(customer.getAddresses().size()).isEqualTo(1);
+        assertThat(customer.getAddresses().size()).isEqualTo(0);
     }
+
+    @Test
+    void testThatWeCanUpdateCustomerDetails(){
+        customer = customerRepository.findById(2).orElse(null);
+
+        customer.setPassword("john316");
+        customerRepository.save(customer);
+        assertThat(customer.getPassword()).isEqualTo("john316");
+    }
+
 
 }
 
