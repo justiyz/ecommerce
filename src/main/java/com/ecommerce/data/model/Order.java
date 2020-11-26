@@ -21,9 +21,9 @@ public class Order {
 
     private boolean delivered;
 
-    private boolean status;
+    private boolean cancelled;
 
-    @ManyToMany
+    @ManyToMany()
     private List<Product> products;
 
 }
