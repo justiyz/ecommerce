@@ -39,8 +39,6 @@ public class CustomerController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCustomer (@PathVariable Integer id){
         customerService.deleteCustomerById(id);
-
-        log.info("Id of Customers to be found --> {}", id);
         return new ResponseEntity<>(HttpStatus.OK);
 //        return ResponseEntity.noContent().build();
     }
@@ -48,7 +46,6 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findByCustomerId(@PathVariable Integer id){
         Customer customer = customerService.findByCustomerId(1);
-        customerService.findByCustomerId(1);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 

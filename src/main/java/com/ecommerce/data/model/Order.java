@@ -2,6 +2,8 @@ package com.ecommerce.data.model;
 
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,6 +26,7 @@ public class Order {
     private boolean canceled;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Product> products;
 }

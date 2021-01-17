@@ -44,7 +44,6 @@ public class ProductController {
     @GetMapping("/find/{id}")
     public ResponseEntity<?> findByProductId(@PathVariable Integer id){
         Product product = productService.findProductById(1);
-        productService.findProductById(1);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 

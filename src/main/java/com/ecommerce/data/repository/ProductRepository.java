@@ -1,8 +1,6 @@
 package com.ecommerce.data.repository;
 
-import com.ecommerce.data.exceptions.OrderException;
 import com.ecommerce.data.exceptions.ProductException;
-
 import com.ecommerce.data.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 

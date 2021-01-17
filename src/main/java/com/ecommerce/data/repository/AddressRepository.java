@@ -8,7 +8,7 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
 
 
 
-    public default Address saveAddress (Address address) throws AddressException {
+    default Address saveAddress (Address address) throws AddressException {
         if (isValid(address)){
             save(address);
         }

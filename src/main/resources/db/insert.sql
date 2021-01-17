@@ -16,10 +16,10 @@ values (1, "09031861100", "ern@gmail.com", "Ernest", "Inyang", "ern123"),
        (2, "08023237911", "tobifemi@gmail.com", "Antony", "Joshua", "tony123");
 
 
-insert into customer_addresses (`customer_id`, `addresses_id`)
-values (1, 1),
-       (1, 2),
-       (2, 2);
+insert into customer_addresses (`customer_id`, `addresses_id`, customers_id)
+values (1, 1, 1),
+       (1, 2, 1),
+       (2, 2, 1);
 
 
 insert into card (`id`,`card_name`, `card_number`, `card_type`, `cvv`, `exp_date`, `customer_id`)

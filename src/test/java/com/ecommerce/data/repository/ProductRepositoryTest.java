@@ -46,7 +46,7 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void testThatWeCanSaveAProductWithoutProductName(){
+    void testThatWeCannotSaveAProductWithoutProductName()  {
         product.setPrice(500.00);
         product.setDescription("Garlic is good");
         product.setExpDate("12-10-22");
@@ -93,17 +93,9 @@ class ProductRepositoryTest {
 
     @Test
     void testThatWeCanDeleteProductById(){
-//        product.setName("GingerBread");
-//        product.setPrice(500.00);
-//        product.setDescription("It is Yummy");
-//        product.setExpDate("12-11-22");
-//        product.setQuantity(12);
-//
-//        productRepository.save(product);
-//        assertThat(product.getId()).isNotNull();
 
-        productRepository.deleteById(3);
-        assertThat(productRepository.existsById(3)).isFalse();
+        productRepository.deleteById(2);
+        assertThat(productRepository.existsById(2)).isFalse();
     }
 
 

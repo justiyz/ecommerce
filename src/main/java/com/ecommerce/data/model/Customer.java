@@ -1,15 +1,23 @@
 package com.ecommerce.data.model;
 
-import lombok.Data;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Data
+//@Data
+
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
+
 public class Customer {
 
     @Id
@@ -23,20 +31,25 @@ public class Customer {
     private String contact;
     private String password;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany( cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
+
+//    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
-    private Set<Address> addresses;
+    private List<Address> addresses;
 
     @OneToMany(mappedBy = "customer")
     @ToString.Exclude
+    @JsonIgnore
     private Set<Card> cards;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "customer")
     private Set<Order> orders;
 
     public void setAddresses (Address address) {
         if (addresses == null) {
-            addresses = new HashSet<>();
+            addresses = new ArrayList<>();
         }
         addresses.add(address);
     }
@@ -46,14 +59,6 @@ public class Customer {
             cards = new HashSet<>();
         }
         cards.add(card);
-    }
-
-
-    public void getOrders(Order order) {
-        if (orders == null){
-            orders = new HashSet<>();
-        }
-        orders.add(order);
     }
 
 }

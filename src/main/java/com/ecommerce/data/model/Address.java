@@ -4,11 +4,13 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Entity
 @Data
+@Entity
 public class Address {
 
     @Id
@@ -21,7 +23,8 @@ public class Address {
     private String city;
     private String zipcode;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(mappedBy = "addresses", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     private Set<Customer> customers;
 

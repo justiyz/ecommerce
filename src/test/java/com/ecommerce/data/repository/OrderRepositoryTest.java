@@ -103,12 +103,6 @@ class OrderRepositoryTest {
         Customer customer = optionalCustomer.get();
         assertNotNull(customer.getId());
 
-        List<Order> orderList = orderRepository.findAll();
-
-
-        log.info("customer orders --> {}", customer);
-
-
-
+        customer.getOrders();
         }
 }
