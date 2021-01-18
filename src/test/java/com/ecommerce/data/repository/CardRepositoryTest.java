@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,13 +47,11 @@ class CardRepositoryTest {
         Customer customer = customerRepository.findById(1).orElse(null);
         assert customer != null;
         card.setCustomer(customer);
-        try {
-            cardRepository.saveCard(card);
-        }catch (CardException exp){
-            log.info(exp.getMessage());
-        }
-        assertThat(card.getId()).isNotNull();
+
         log.info("card -> {}", card);
+        assertDoesNotThrow( () -> {
+            cardRepository.saveCard(card);
+        });
     }
 
     @Test
@@ -61,27 +62,47 @@ class CardRepositoryTest {
         card.setCvv(230);
         card.setExpDate("1-10-24");
 
-//        try {
-//            cardRepository.saveCard(card);
-//        }catch (CardException exp){
-//            log.info(exp.getMessage());
-//        }
-
         assertThrows(CardException.class, ()-> {
             cardRepository.saveCard(card);
         });
     }
 
     @Test
-    void testThatOneCustomerCanHaveMultipleCards () {
-        card = cardRepository.findById(2).orElse(null);
-        assert card != null;
-
-        Customer customer = customerRepository.findById(1).orElse(null);
-        assert customer != null;
-
-        card.setCustomer(customer);
-        assertDoesNotThrow(() -> {cardRepository.save(card); });
+    void testThatWeCanFindACardById(){
+        Optional<Card> optionalCard = cardRepository.findById(2);
+        Card card = optionalCard.get();
+        assertThat(card.getId()).isNotNull();
+        log.info("card found --> {}", card.getCardName());
     }
+
+    @Test
+    void testThatWeCanFindAllCards(){
+        List<Card> cardList = cardRepository.findAll();
+        assertThat(cardList).isNotNull();
+        log.info("card list --> {}", cardList);
+    }
+
+    @Test
+    void testThatWeCanUpdateCard(){
+        Optional<Customer> optionalCustomer = customerRepository.findById(2);
+        Customer customer = optionalCustomer.get();
+        assertThat(customer).isNotNull();
+
+        Optional<Card> optionalCard = cardRepository.findById(2);
+        Card card = optionalCard.get();
+        card.setCardName("Fabinho Tavares");
+        card.setCustomer(customer);
+
+        cardRepository.save(card);
+    }
+
+    @Test
+    void testThatWeCanDeleteCard(){
+        assertThat(cardRepository.existsById(2)).isTrue();
+        cardRepository.deleteById(2);
+        assertThat(cardRepository.existsById(2)).isFalse();
+    }
+
+
 
 }

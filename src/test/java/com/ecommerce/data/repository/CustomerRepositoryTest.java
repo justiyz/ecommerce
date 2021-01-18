@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
+
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,13 +38,14 @@ class CustomerRepositoryTest {
 
     @Test
     void testThatWeCanSaveCustomer () {
-        customer.setContact("09031861100");
-        customer.setEmail("iclasschima@gmail.com");
-        customer.setFirstName("iClass");
-        customer.setLastName("Chima");
+        customer.setContact("09131863333");
+        customer.setEmail("ndang@co.gov");
+        customer.setFirstName("white");
+        customer.setLastName("man");
         customer.setPassword("iclass123");
 
-        Address address = addressRepository.findById(1).orElse(null);
+        Optional<Address> optionalAddress = addressRepository.findById(1);
+        Address address = optionalAddress.get();
         customer.setAddresses(address);
 
         assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
@@ -48,12 +53,15 @@ class CustomerRepositoryTest {
 
     @Test
     void testThatTwoCustomersCanShareOneAddress () {
-       customer = customerRepository.findById(2).orElse(null);
+       Customer customer1 = customerRepository.findById(2).orElse(null);
+       Customer customer2 = customerRepository.findById(1).orElse(null);
 
         Address address = addressRepository.findById(1).orElse(null);
-        customer.setAddresses(address);
+        customer1.setAddresses(address);
+        customer2.setAddresses(address);
 
-        assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
+        assertDoesNotThrow(() -> customerRepository.saveCustomer(customer1));
+        assertDoesNotThrow(() -> customerRepository.saveCustomer(customer2));
     }
 
     @Test
@@ -62,12 +70,18 @@ class CustomerRepositoryTest {
     void testThatOneCustomerCanHaveMultipleAddresses () {
         customer = customerRepository.findById(2).orElse(null);
 
-        Address address = addressRepository.findById(1).orElse(null);
+        Optional<Address> optionalAddress1 = addressRepository.findById(1);
+        Address address1 = optionalAddress1.get();
+        assertNotNull(address1);
+        customer.setAddresses(address1);
 
-        customer.setAddresses(address);
+        Optional<Address> optionalAddress2 = addressRepository.findById(4);
+        Address address2 = optionalAddress2.get();
+        assertNotNull(address2);
+        customer.setAddresses(address2);
 
         assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
-        assertThat(customer.getAddresses().size()).isEqualTo(2);
+        assertThat(customer.getAddresses().size()).isNotNull();
     }
 
     @Test
@@ -75,12 +89,11 @@ class CustomerRepositoryTest {
     @Rollback(value = false)
     void testThatWeCanFetchAllCustomerAddress () {
         customer = customerRepository.findById(1).orElse(null);
+        assertNotNull(customer);
 
-        assert customer != null;
         for (Address address : customer.getAddresses()) {
            log.info("address -> {}", address.getStreet());
        }
-
        assertThat(customer.getAddresses().size()).isEqualTo(2);
     }
 
@@ -88,26 +101,29 @@ class CustomerRepositoryTest {
     @Transactional
     @Rollback(value = false)
     void testThatWeCanRemoveAnAddressFromACustomerAddressesList () {
-        customer =  customerRepository.findById(1).orElse(null);
+        Optional<Customer> optionalCustomer = customerRepository.findById(1);
+        Customer customer = optionalCustomer.get();
+        assertNotNull(customer);
 
-        assert customer != null;
-
-        Address address = addressRepository.findById(1).orElse(null);
+        Optional<Address> optionalAddress = addressRepository.findById(1);
+        Address address = optionalAddress.get();
+        assertNotNull(address);
 
         if (customer.getAddresses().contains(address)) {
             customer.getAddresses().remove(address);
         }
-
         assertThat(customer.getAddresses().size()).isEqualTo(1);
     }
 
     @Test
     void testThatWeCanUpdateCustomerDetails () {
-        customer = customerRepository.findById(2).orElse(null);
-        customer.setPassword("tobi123");
+        Optional<Customer> optionalCustomer = customerRepository.findById(3);
+        Customer customer = optionalCustomer.get();
+        assertNotNull(customer);
+        customer.setPassword("NewAnti123");
 
         assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
-        assertThat(customer.getPassword()).isEqualTo("tobi123");
+        assertThat(customer.getPassword()).isEqualTo("NewAnti123");
     }
 
 }

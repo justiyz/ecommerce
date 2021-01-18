@@ -24,7 +24,7 @@ public class Address {
     private String zipcode;
 
 
-    @ManyToMany(mappedBy = "addresses", cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "addresses", cascade = CascadeType.ALL)
     @ToString.Exclude
     private Set<Customer> customers;
 

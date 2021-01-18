@@ -67,12 +67,18 @@ class AddressRepositoryTest {
     }
 
     @Test
-    @Transactional
-    @Rollback(value = false)
     void testThatWeCanDeleteAddress () {
-        assertThat(addressRepository.existsById(2)).isTrue();
-        addressRepository.deleteById(2);
-        assertThat(addressRepository.existsById(2)).isFalse();
+        assertThat(addressRepository.existsById(3)).isTrue();
+        addressRepository.deleteById(3);
+        assertThat(addressRepository.existsById(3)).isFalse();
+    }
+
+    @Test
+    void testThatWeCanFindAddressById(){
+       Optional<Address> optionalAddress = addressRepository.findById(4);
+       Address address = optionalAddress.get();
+       log.info("address found -> {}", address);
+       assertThat(address).isNotNull();
     }
 
     @Test

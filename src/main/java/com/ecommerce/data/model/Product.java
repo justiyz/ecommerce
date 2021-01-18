@@ -19,7 +19,6 @@ public class Product {
     private Double price;
     private Integer quantity;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
     @ManyToMany(mappedBy = "products")
     private List<Order> orders;
 

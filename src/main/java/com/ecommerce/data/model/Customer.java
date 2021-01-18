@@ -31,17 +31,15 @@ public class Customer {
     private String contact;
     private String password;
 
-    @ManyToMany( cascade = {CascadeType.ALL})
+    @ManyToMany()
     @LazyCollection(LazyCollectionOption.FALSE)
-
-//    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<Address> addresses;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToOne(mappedBy = "customer")
     @ToString.Exclude
     @JsonIgnore
-    private Set<Card> cards;
+    private Card card;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "customer")
@@ -55,10 +53,9 @@ public class Customer {
     }
 
     public void setCards (Card card) {
-        if (cards == null) {
-            cards = new HashSet<>();
+        if (getCard() == null) {
+            this.card = card;
         }
-        cards.add(card);
     }
 
 }

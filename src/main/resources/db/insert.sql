@@ -8,22 +8,25 @@ truncate table product;
 
 insert into address (`id`, `city`, `country`, `state`, `street`, `zipcode`)
 values (1, "Yaba", "Nigeria", "Lagos", "312 Herbert Macaulay way, Sabo", "100110"),
-       (2, "Mushin", "Nigeria", "Lagos", "19 wey street, Mushin", "001001");
+       (2, "Mushin", "Nigeria", "Lagos", "19 way street, Mushin", "001001"),
+       (3, "Lekki", "Nigeria", "Ekpe", "41 road, Lekki-Ekpe", "112233"),
+       (4, "Ajah", "Nigeria", "Ogun", "1024 way, Ajah", "223344");
 
 
 insert into customer (`id`, `contact`, `email`, `first_name`, `last_name`, `password`)
 values (1, "09031861100", "ern@gmail.com", "Ernest", "Inyang", "ern123"),
-       (2, "08023237911", "tobifemi@gmail.com", "Antony", "Joshua", "tony123");
+       (2, "08023237911", "tobifemi@gmail.com", "Antony", "Joshua", "tony123"),
+       (3, "123-456-789", "Antking@yahoo.com", "Anthony", "King", "ant123");
 
 
-insert into customer_addresses (`customer_id`, `addresses_id`, customers_id)
-values (1, 1, 1),
-       (1, 2, 1),
-       (2, 2, 1);
+insert into customer_addresses (`customers_id`, `addresses_id`)
+values (1, 1),
+       (1, 2),
+       (2, 2);
 
 
 insert into card (`id`,`card_name`, `card_number`, `card_type`, `cvv`, `exp_date`, `customer_id`)
-values (1, "Samuel Jackson", "20139456222", "Verve", 154, "2-5-21", 1 ),
+values (1, "Samuel Jackson", "20139456222", "Verve", 154, "2-5-21", null ),
        (2, "Akpan Ifiok", "5655800015546", "Master card", 102, "12-10-22", null );
 
 
