@@ -1,5 +1,6 @@
 package com.ecommerce.service.customer;
 
+import com.ecommerce.data.exceptions.CustomerException;
 import com.ecommerce.data.model.Customer;
 import com.ecommerce.data.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +31,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void testThatWeCanCallTheSaveCustomerRepository () {
+    void testThatWeCanCallTheSaveCustomerRepository () throws CustomerException {
         when(customerRepository.save(customer)).thenReturn(customer);
         customerService.saveCustomer(customer);
         verify(customerRepository, times(1)).save(customer);
@@ -58,7 +59,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void testThatWeCanCallTheUpdateCustomerRepository () {
+    void testThatWeCanCallTheUpdateCustomerRepository () throws CustomerException {
         when(customerRepository.save(customer)).thenReturn(customer);
         customerService.updateCustomer(customer);
         verify(customerRepository, times(1)).save(customer);

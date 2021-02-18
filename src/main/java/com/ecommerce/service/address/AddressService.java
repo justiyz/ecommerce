@@ -15,5 +15,5 @@ public interface AddressService {
 
     public List<Address> findAllAddresses();
 
-    public Address updateAddress(Address address) ;
+    public Address updateAddress(Address address);
 }

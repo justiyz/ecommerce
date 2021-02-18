@@ -1,5 +1,8 @@
 package com.ecommerce.web.controller.customer;
 
+import com.ecommerce.data.dto.CustomerDto;
+import com.ecommerce.data.dto.CustomerDtoMapper;
+import com.ecommerce.data.exceptions.CustomerException;
 import com.ecommerce.data.model.Customer;
 import com.ecommerce.service.customer.CustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,9 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
+    @Autowired
+    CustomerDtoMapper customerDtoMapper;
+
     @GetMapping("/all")
     public ResponseEntity<?> getAllCustomers(){
         List<Customer> customers = customerService.findAllCustomer();
@@ -25,14 +31,22 @@ public class CustomerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createCustomer (@RequestBody Customer customer){
-        customerService.saveCustomer(customer);
+    public ResponseEntity<?> createCustomer (@RequestBody CustomerDto customerDto){
+        try {
+            customerService.saveCustomer(customerDtoMapper.setCustomerDtoToCustomer(customerDto));
+        } catch (CustomerException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateCustomer (@RequestBody Customer customer){
-        customerService.updateCustomer(customer);
+    public ResponseEntity<?> updateCustomer (@RequestBody CustomerDto customerDto){
+        try {
+            customerService.updateCustomer(customerDtoMapper.setCustomerDtoToCustomer(customerDto));
+        } catch (CustomerException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

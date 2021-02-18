@@ -5,12 +5,18 @@ truncate table address;
 truncate table customer_addresses;
 truncate table card;
 truncate table product;
+truncate table order_tb;
+
+insert into order_tb (`id`, `canceled`, `date`, `delivered`, `customer_id`)
+values (1, 0, "10-12-2021", 1, 3),
+        (2, 0, "20-02-2021", 1, 2);
 
 insert into address (`id`, `city`, `country`, `state`, `street`, `zipcode`)
 values (1, "Yaba", "Nigeria", "Lagos", "312 Herbert Macaulay way, Sabo", "100110"),
        (2, "Mushin", "Nigeria", "Lagos", "19 way street, Mushin", "001001"),
        (3, "Lekki", "Nigeria", "Ekpe", "41 road, Lekki-Ekpe", "112233"),
        (4, "Ajah", "Nigeria", "Ogun", "1024 way, Ajah", "223344");
+
 
 
 insert into customer (`id`, `contact`, `email`, `first_name`, `last_name`, `password`)

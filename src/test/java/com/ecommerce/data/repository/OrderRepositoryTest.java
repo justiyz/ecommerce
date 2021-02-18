@@ -15,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,6 +39,8 @@ class OrderRepositoryTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = false)
     void testThatACustomerCanPlaceAnOrder() {
         Optional<Customer> optionalCustomer = customerRepository.findById(1);
         Customer customer = optionalCustomer.get();
@@ -105,4 +108,42 @@ class OrderRepositoryTest {
 
         customer.getOrders();
         }
+
+    @Test
+    void testThatWeCanFindAnOrderById(){
+        Optional<Order> optionalOrder = orderRepository.findById(1);
+        Order order = optionalOrder.get();
+        assertThat(order).isNotNull();
+        log.info("order -> {}", order);
+        }
+
+    @Test
+    void testThatWeCanFindAllOrders(){
+        List<Order> orderList = orderRepository.findAll();
+        assertThat(orderList).isNotEmpty();
+        log.info("orderList -> {}", orderList);
+        }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    void testThatWeCanFindAllOrdersOfACustomer(){
+        Optional<Customer> optionalCustomer = customerRepository.findById(2);
+        Customer customer = optionalCustomer.get();
+        assertNotNull(customer);
+
+        for (Order order : customer.getOrders() ){
+            log.info("customers orders --> {}", order.getDate());
+        }
+        assertThat(customer.getOrders()).size().isEqualTo(1);
+    }
+
+    @Test
+    void testThatWeCanDeleteAnOrder(){
+        assertThat(orderRepository.existsById(2)).isTrue();
+        orderRepository.deleteById(2);
+        assertThat(orderRepository.existsById(2)).isFalse();
+
+
+    }
 }
