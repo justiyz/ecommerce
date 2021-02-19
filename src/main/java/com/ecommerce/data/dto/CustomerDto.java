@@ -1,5 +1,6 @@
 package com.ecommerce.data.dto;
 
+import com.ecommerce.data.model.Gender;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -14,4 +15,6 @@ public class CustomerDto {
     private String lastName;
 
     private String contact;
+
+    private Gender gender;
 }

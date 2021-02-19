@@ -1,12 +1,17 @@
 package com.ecommerce.web.controller.customer;
 
+import com.ecommerce.data.model.Address;
 import com.ecommerce.data.model.Customer;
+import com.ecommerce.data.model.Gender;
+import com.ecommerce.data.repository.AddressRepository;
+import com.ecommerce.service.address.AddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,9 +20,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@SpringBootTest
+@SpringBootTest()
 @AutoConfigureMockMvc
+@Sql(scripts = "classpath:db/insert.sql")
 class CustomerControllerTest {
+
+    @Autowired
+    AddressService addressService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -34,11 +43,13 @@ class CustomerControllerTest {
 
     @Test
     void testThatWeCanCallTheCreateCustomerEndpoint_thenReturnOk() throws Exception{
+
         customer.setFirstName("Jon");
         customer.setLastName("Snow");
         customer.setContact("0908877644");
         customer.setEmail("jon@gmail.com");
         customer.setPassword("jon123");
+        customer.setGender(Gender.MALE);
 
         this.mockMvc.perform(post("/customer/create")
                     .contentType("application/json")

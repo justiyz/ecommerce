@@ -30,6 +30,7 @@ public class Customer {
     private String email;
     private String contact;
     private String password;
+    private Gender gender;
 
     @ManyToMany()
     @LazyCollection(LazyCollectionOption.FALSE)

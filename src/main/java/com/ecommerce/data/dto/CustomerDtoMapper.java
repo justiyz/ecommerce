@@ -26,6 +26,7 @@ public class CustomerDtoMapper {
         customerDto.setLastName(customer.getLastName());
         customerDto.setEmail(customer.getEmail());
         customerDto.setContact(customer.getContact());
+//        customerDto.setGender(customer.getGender());
         return customerDto;
     }
 
@@ -44,7 +45,8 @@ public class CustomerDtoMapper {
         customer.setFirstName(customerDto.getFirstName());
         customer.setLastName(customerDto.getLastName());
         customer.setContact(customerDto.getContact());
-        customer.setContact(customerDto.getContact());
+        customer.setEmail(customerDto.getEmail());
+//        customer.setGender(customerDto.getGender());
 
         return customer;
     }
