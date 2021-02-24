@@ -36,13 +36,13 @@ public class AddressController {
         return new ResponseEntity<>(address, HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAddress(@PathVariable Integer id){
         addressService.deleteAddressById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("find/{id}")
+    @GetMapping("/find/{id}")
     public ResponseEntity<?> findAddressById(@PathVariable Integer id){
         Address address = addressService.findAddressById(id);
         return new ResponseEntity<>(address, HttpStatus.OK);
