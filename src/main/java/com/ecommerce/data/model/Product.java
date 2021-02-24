@@ -23,6 +23,8 @@ public class Product {
     private String expDate;
     private Double price;
     private Integer quantity;
+    private String serialNumber;
+    private String weight;
 
     @ManyToMany(mappedBy = "products")
     private List<Order> orders;
